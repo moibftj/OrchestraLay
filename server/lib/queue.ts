@@ -1,21 +1,15 @@
 import PgBoss from 'pg-boss'
 
-import { env } from './env.js'
+let boss: PgBoss | null = null
 
-const globalForQueue = globalThis as typeof globalThis & {
-  orchestralayQueue?: PgBoss
-}
-
+/** pg-boss singleton. Call once at startup before worker registration. */
 export async function getQueue(): Promise<PgBoss> {
-  if (!globalForQueue.orchestralayQueue) {
-    const queue = new PgBoss({
-      connectionString: env.DATABASE_URL,
-      application_name: 'orchestralay',
-    })
+  if (boss) return boss
 
-    await queue.start()
-    globalForQueue.orchestralayQueue = queue
-  }
+  const connectionString = process.env.DATABASE_URL
+  if (!connectionString) throw new Error('DATABASE_URL is required for pg-boss')
 
-  return globalForQueue.orchestralayQueue
+  boss = new PgBoss({ connectionString })
+  await boss.start()
+  return boss
 }

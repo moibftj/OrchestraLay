@@ -1,23 +1,14 @@
-import { drizzle } from 'drizzle-orm/node-postgres'
-import { Pool } from 'pg'
-
-import { env } from '../lib/env.js'
+import 'dotenv/config'
+import { drizzle } from 'drizzle-orm/postgres-js'
+import postgres from 'postgres'
 import * as schema from './schema.js'
 
-const globalForDb = globalThis as typeof globalThis & {
-  orchestralayPool?: Pool
+const connectionString = process.env.DATABASE_URL
+if (!connectionString) {
+  throw new Error('DATABASE_URL environment variable is required')
 }
 
-const pool =
-  globalForDb.orchestralayPool ??
-  new Pool({
-    connectionString: env.DATABASE_URL,
-    max: env.NODE_ENV === 'production' ? 20 : 10,
-  })
+const client = postgres(connectionString, { prepare: false })
 
-if (env.NODE_ENV !== 'production') {
-  globalForDb.orchestralayPool = pool
-}
-
-export const db = drizzle(pool, { schema })
-export { pool }
+export const db = drizzle(client, { schema })
+export type Database = typeof db
