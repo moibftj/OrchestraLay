@@ -1,11 +1,9 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    "outDir": "dist/server",
-    "rootDir": ".",
-    "types": ["node"]
+    "noEmit": false,
+    "outDir": "dist",
+    "jsx": "react-jsx"
   },
-  "include": ["server/**/*.ts"],
-  "exclude": ["dist", "node_modules"]
+  "include": ["server/**/*.ts"]
 }

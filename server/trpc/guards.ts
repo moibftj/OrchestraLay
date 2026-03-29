@@ -1,69 +1,60 @@
 import { TRPCError } from '@trpc/server'
-
-import type { ApiKeyAuth, DashboardAuth } from './context.js'
 import { middleware, publicProcedure } from './trpc.js'
+import type { AuthContext, DashboardAuth, ApiKeyAuth } from './context.js'
 
-const requireAuthed = middleware(({ ctx, next }) => {
+// ─── Middleware: require any auth ────────────────────────────────────
+
+const isAuthed = middleware(async ({ ctx, next }) => {
   if (ctx.auth.type === 'none') {
-    throw new TRPCError({ code: 'UNAUTHORIZED' })
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Authentication required' })
   }
-
-  return next({
-    ctx: {
-      ...ctx,
-      auth: ctx.auth,
-    },
-  })
+  return next({ ctx: { ...ctx, auth: ctx.auth as DashboardAuth | ApiKeyAuth } })
 })
 
-const requireDashboard = middleware(({ ctx, next }) => {
+// ─── Middleware: require dashboard (JWT) auth ────────────────────────
+
+const isDashboard = middleware(async ({ ctx, next }) => {
   if (ctx.auth.type !== 'dashboard') {
-    throw new TRPCError({ code: 'UNAUTHORIZED' })
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Dashboard authentication required' })
   }
-
-  return next({
-    ctx: {
-      ...ctx,
-      auth: ctx.auth satisfies DashboardAuth,
-    },
-  })
+  return next({ ctx: { ...ctx, auth: ctx.auth as DashboardAuth } })
 })
 
-const requireAdmin = middleware(({ ctx, next }) => {
-  if (ctx.auth.type !== 'dashboard' || !['owner', 'admin'].includes(ctx.auth.role)) {
-    throw new TRPCError({ code: 'FORBIDDEN' })
-  }
+// ─── Middleware: require admin role ──────────────────────────────────
 
-  return next({
-    ctx: {
-      ...ctx,
-      auth: ctx.auth satisfies DashboardAuth,
-    },
-  })
+const isAdmin = middleware(async ({ ctx, next }) => {
+  if (ctx.auth.type !== 'dashboard') {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Dashboard authentication required' })
+  }
+  if (ctx.auth.role !== 'admin' && ctx.auth.role !== 'owner') {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin access required' })
+  }
+  return next({ ctx: { ...ctx, auth: ctx.auth as DashboardAuth } })
 })
 
-export const authedProcedure = publicProcedure.use(requireAuthed)
-export const dashboardProcedure = publicProcedure.use(requireAuthed).use(requireDashboard)
-export const adminProcedure = publicProcedure.use(requireAuthed).use(requireDashboard).use(requireAdmin)
+// ─── Middleware factory: require API key with specific scope ─────────
 
-export function apiKeyProcedure(scope: string) {
-  return publicProcedure.use(requireAuthed).use(({ ctx, next }) => {
+function requireApiKeyScope(scope: string) {
+  return middleware(async ({ ctx, next }) => {
     if (ctx.auth.type !== 'apikey') {
-      throw new TRPCError({ code: 'UNAUTHORIZED' })
+      throw new TRPCError({ code: 'UNAUTHORIZED', message: 'API key required' })
     }
-
-    const auth = ctx.auth satisfies ApiKeyAuth
-    if (!auth.scopes.includes(scope)) {
-      throw new TRPCError({ code: 'FORBIDDEN' })
+    if (!ctx.auth.scopes.includes(scope)) {
+      throw new TRPCError({ code: 'FORBIDDEN', message: `Scope '${scope}' required` })
     }
-
-    return next({
-      ctx: {
-        ...ctx,
-        auth,
-      },
-    })
+    return next({ ctx: { ...ctx, auth: ctx.auth as ApiKeyAuth } })
   })
 }
 
-export { publicProcedure }
+// ─── Procedure variants ──────────────────────────────────────────────
+
+export const authedProcedure = publicProcedure.use(isAuthed)
+export const dashboardProcedure = publicProcedure.use(isDashboard)
+export const adminProcedure = publicProcedure.use(isAdmin)
+
+export function apiKeyProcedure(scope: string) {
+  return publicProcedure.use(requireApiKeyScope(scope))
+}
+
+// Re-export publicProcedure for convenience
+export { publicProcedure } from './trpc.js'
