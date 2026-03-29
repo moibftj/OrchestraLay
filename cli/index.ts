@@ -40,6 +40,10 @@ function parseArgs(argv: string[]): ParsedArgs {
   let i = 0
   while (i < argv.length) {
     const arg = argv[i]
+    if (!arg) {
+      i++
+      continue
+    }
     if (arg.startsWith('--')) {
       const key = arg.slice(2)
       const next = argv[i + 1]
@@ -165,7 +169,9 @@ async function cmdStatus(flags: Record<string, string | boolean>) {
     if (task.metadata && (task.metadata as Record<string, unknown>).routingReasoning) {
       log('\nRouting decisions:')
       const reasoning = (task.metadata as Record<string, string[]>).routingReasoning
-      for (const line of reasoning) log(`  · ${line}`)
+      if (reasoning) {
+        for (const line of reasoning) log(`  · ${line}`)
+      }
     }
     out(task)
   } catch (e: unknown) {
@@ -240,6 +246,10 @@ async function cmdApply(flags: Record<string, string | boolean>) {
           log(`  🗑  deleted ${d.filePath}`)
         } else {
           // Extract after-content from unified diff (lines starting with + not +++)
+          if (!d.unifiedDiff) {
+            log(`  ⚠️  skipped ${d.filePath}: no unified diff`)
+            continue
+          }
           const afterLines = d.unifiedDiff
             .split('\n')
             .filter((l: string) => l.startsWith('+') && !l.startsWith('+++'))

@@ -6,6 +6,6 @@
     "rootDir": ".",
     "types": ["node"]
   },
-  "include": ["cli/**/*.ts"],
+  "include": ["cli/**/*.ts", "server/**/*.ts"],
   "exclude": ["dist", "node_modules"]
 }
