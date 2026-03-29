@@ -1,13 +1,21 @@
 # CLI Guide
 
-> **Status:** Implemented in `cli/index.ts` (208 lines). Shebang: `#!/usr/bin/env node`.
+> **Status:** Implementation in progress on branch `claude/add-claude-md-file-VA6l8` (`cli/index.ts`). This documentation tracks the CLI as it is built by a parallel agent.
 
 ---
 
 ## Installation
 
+The CLI is part of the main OrchestraLay repository (in `cli/index.ts`). Once the implementation branch lands, run it from the project root:
+
 ```bash
-npm install -g @orchestralay/cli
+# From the project directory
+npx tsx cli/index.ts submit --prompt "..." --type code_generation
+```
+
+Or alias it for convenience:
+```bash
+alias orchestralay="npx tsx cli/index.ts"
 ```
 
 ---

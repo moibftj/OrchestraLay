@@ -1,6 +1,6 @@
 # Authentication
 
-> **Status:** Implemented in `server/trpc/context.ts`, `server/trpc/guards.ts`, and `server/lib/hashKey.ts`.
+> **Status:** Implementation in progress on branch `claude/add-claude-md-file-VA6l8` (auth context and guards). This documentation tracks the auth system as it is built by a parallel agent.
 
 ---
 

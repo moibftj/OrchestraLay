@@ -1,6 +1,6 @@
 # System Architecture
 
-> **Status:** Implemented (steps 1-29 of 30). Backend, frontend, CLI, and Dockerfile are complete. Remaining: step 26 (E2E verification with live Supabase) and step 30 (Stripe checkout + webhook).
+> **Status:** Implementation in progress on branch `claude/add-claude-md-file-VA6l8` (steps 1-29 of 30). This documentation tracks the architecture as it is built by a parallel agent.
 
 ---
 

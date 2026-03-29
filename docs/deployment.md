@@ -1,6 +1,6 @@
 # Deployment & Configuration
 
-> **Status:** Implemented. Dockerfile, railway.toml, and .env.example are in place. Remaining: Stripe env vars (step 30).
+> **Status:** Implementation in progress on branch `claude/add-claude-md-file-VA6l8` (Dockerfile, railway.toml, .env.example). This documentation tracks the deployment config as it is built by a parallel agent.
 
 ---
 
@@ -59,16 +59,21 @@ This starts both:
 
 | Script | Description |
 |---|---|
-| `npm run dev` | Start server with tsx watch (auto-reload on changes) |
-| `npm run dev:frontend` | Start Vite dev server only (port 5173) |
-| `npm run build` | Compile TypeScript + build Vite frontend |
+| `npm run dev` | Start server + client in parallel (via concurrently) |
+| `npm run dev:server` | Start server only (tsx watch mode, auto-reload) |
+| `npm run dev:client` | Start Vite dev server only (port 5173) |
+| `npm run build` | Build both client (Vite) and server (TypeScript) |
 | `npm run start` | Run production server (`node dist/server/index.js`) |
 | `npm run db:generate` | Generate Drizzle migration files |
 | `npm run db:migrate` | Run pending migrations |
 | `npm run db:push` | Push schema directly (dev only) |
 | `npm run db:studio` | Open Drizzle Studio (database browser) |
+| `npm run typecheck` | Run TypeScript type checking |
+| `npm run lint` | Run ESLint |
+| `npm run test` | Run tests (Vitest) |
+| `npm run test:watch` | Run tests in watch mode |
 
-**Note:** Run `npm run dev` and `npm run dev:frontend` in separate terminals for full-stack development. The Vite dev server proxies `/trpc` requests to `http://localhost:3001`.
+**Note:** `npm run dev` starts both the backend and frontend together. Use `npm run dev:server` or `npm run dev:client` individually if you only need one. The Vite dev server proxies `/trpc` requests to `http://localhost:3001`.
 
 ---
 

@@ -1,6 +1,6 @@
 # Model Routing Engine
 
-> **Status:** Implemented in `server/lib/modelRegistry.ts`, `server/lib/modelHealth.ts`, and `server/lib/modelRouter.ts`.
+> **Status:** Implementation in progress on branch `claude/add-claude-md-file-VA6l8` (model routing layer). This documentation tracks the routing engine as it is built by a parallel agent.
 
 ---
 

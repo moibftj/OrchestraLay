@@ -1,6 +1,6 @@
 # tRPC API Reference
 
-> **Status:** Implemented in `server/routers/tasks.ts`, `server/routers/diffs.ts`, `server/routers/dashboard.ts`, and `server/routers/auth.ts`. Merged in `server/routers/index.ts`.
+> **Status:** Implementation in progress on branch `claude/add-claude-md-file-VA6l8` (tRPC routers). This documentation tracks the API as it is built by a parallel agent.
 
 ---
 

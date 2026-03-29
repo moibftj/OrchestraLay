@@ -1,6 +1,6 @@
 # Diff Engine & Safety Rules
 
-> **Status:** Implemented in `server/lib/outputParser.ts`, `server/lib/diffComputer.ts`, `server/lib/safetyRules.ts`, and `server/lib/diffEngine.ts`.
+> **Status:** Implementation in progress on branch `claude/add-claude-md-file-VA6l8` (diff engine pipeline). This documentation tracks the safety system as it is built by a parallel agent.
 
 ---
 
@@ -78,7 +78,7 @@ Every file operation is checked against these rules. **Block** means the diff ca
 | 4 | `config_file_change` | `*.config.*`, `.eslintrc`, `.prettierrc`, `Dockerfile`, `docker-compose.*` | warn |
 | 5 | `test_deletion` | Delete + test file pattern (`*.test.*`, `*.spec.*`, `__tests__/`) | **block** |
 | 6 | `custom_blocked_path` | Paths matching `project.safetyRules.customBlockedPaths[]` | **block** |
-| 7 | `large_change` | File > 50 lines AND change ratio > 80% | warn |
+| 7 | `large_change` | before > 50 lines AND change ratio > 80% | warn |
 | 8 | `potential_secret` | Regex matches: `api_key=`, `sk-` patterns, JWT, `PRIVATE KEY` in new content | **block** |
 
 ---
