@@ -49,7 +49,7 @@ Used by the CLI and any SDK/integration.
 
 **Key format:** `olay_` followed by 32 random hex bytes
 ```
-olay_a1b2c3d4e5f6...  (66 characters total)
+olay_a1b2c3d4e5f6...  (69 characters total: 5 prefix + 64 hex)
 ```
 
 **Flow:**

@@ -108,7 +108,7 @@ builder = "dockerfile"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-healthcheckPath = "/health"
+healthcheckPath = "/healthz"
 healthcheckTimeout = 30
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
@@ -169,5 +169,5 @@ Never use `*` as the CORS origin when credentials (cookies/auth headers) are in 
 
 The server exposes a health endpoint for Railway's healthcheck:
 ```
-GET /health → { "status": "ok", "timestamp": "2026-03-28T..." }
+GET /healthz → { "ok": true }
 ```

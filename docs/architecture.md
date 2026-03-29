@@ -165,7 +165,7 @@ This was originally Bug 3 in CLAUDE.md — now fixed in `server/index.ts` (line 
 
 The server exposes a health endpoint at:
 ```
-GET /health → { status: 'ok', timestamp: '...' }
+GET /healthz → { ok: true }
 ```
 
 This is used by Railway's healthcheck (configured in `railway.toml` with 30s timeout).
