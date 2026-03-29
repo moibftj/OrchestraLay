@@ -59,19 +59,16 @@ This starts both:
 
 | Script | Description |
 |---|---|
-| `npm run dev` | Start server + client in parallel (via concurrently) |
+| `npm run dev` | Start server + client in parallel (via npm-run-all) |
 | `npm run dev:server` | Start server only (tsx watch mode, auto-reload) |
 | `npm run dev:client` | Start Vite dev server only (port 5173) |
-| `npm run build` | Build both client (Vite) and server (TypeScript) |
+| `npm run build` | Build client, server, and CLI |
+| `npm run build:cli` | Build CLI TypeScript (`tsc -p tsconfig.cli.json`) |
 | `npm run start` | Run production server (`node dist/server/index.js`) |
+| `npm run check` | Type-check server, client, and CLI in parallel |
 | `npm run db:generate` | Generate Drizzle migration files |
 | `npm run db:migrate` | Run pending migrations |
-| `npm run db:push` | Push schema directly (dev only) |
-| `npm run db:studio` | Open Drizzle Studio (database browser) |
-| `npm run typecheck` | Run TypeScript type checking |
-| `npm run lint` | Run ESLint |
-| `npm run test` | Run tests (Vitest) |
-| `npm run test:watch` | Run tests in watch mode |
+| `npm run cli` | Run CLI directly via tsx (`tsx cli/index.ts`) |
 
 **Note:** `npm run dev` starts both the backend and frontend together. Use `npm run dev:server` or `npm run dev:client` individually if you only need one. The Vite dev server proxies `/trpc` requests to `http://localhost:3001`.
 
