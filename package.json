@@ -17,7 +17,7 @@
     "build:server": "tsc -p tsconfig.server.json",
     "build:client": "vite build",
     "build:cli": "tsc -p tsconfig.cli.json",
-    "start": "node dist/server/index.js",
+    "start": "node dist/server/server/index.js",
     "check": "npm-run-all check:server check:client check:cli",
     "check:server": "tsc -p tsconfig.server.json --noEmit",
     "check:client": "tsc -p tsconfig.client.json --noEmit",

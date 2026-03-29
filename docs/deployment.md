@@ -64,7 +64,7 @@ This starts both:
 | `npm run dev:client` | Start Vite dev server only (port 5173) |
 | `npm run build` | Build client, server, and CLI |
 | `npm run build:cli` | Build CLI TypeScript (`tsc -p tsconfig.cli.json`) |
-| `npm run start` | Run production server (`node dist/server/index.js`) |
+| `npm run start` | Run production server (`node dist/server/server/index.js`) |
 | `npm run check` | Type-check server, client, and CLI in parallel |
 | `npm run db:generate` | Generate Drizzle migration files |
 | `npm run db:migrate` | Run pending migrations |
@@ -96,7 +96,7 @@ Multi-stage build (3 stages, Node 20-slim base):
 
 1. **base** — Install production dependencies only (`npm ci --omit=dev`)
 2. **build** — Install all dependencies, copy source, run `npm run build` (produces `dist/server/` and `dist/client/`)
-3. **production** — Copy `node_modules` from base, `dist/server` and `dist/client` from build, expose port 3001, run `node dist/server/index.js`
+3. **production** — Copy `node_modules` from base, `dist/server` and `dist/client` from build, expose port 3001, run `node dist/server/server/index.js`
 
 The frontend is served as static files from Express in production (both from the same container).
 
