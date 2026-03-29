@@ -1,7 +1,8 @@
+import { useState } from 'react'
 import { Link, Route, Switch } from 'wouter'
-
 import { Costs } from './pages/Costs'
 import { DiffReview } from './pages/DiffReview'
+import { Login } from './pages/Login'
 import { Overview } from './pages/Overview'
 
 const navItems = [
@@ -11,6 +12,17 @@ const navItems = [
 ]
 
 export function App() {
+  const [authed, setAuthed] = useState(() => !!localStorage.getItem('olay_token'))
+
+  function handleLogout() {
+    localStorage.removeItem('olay_token')
+    setAuthed(false)
+  }
+
+  if (!authed) {
+    return <Login onLogin={() => setAuthed(true)} />
+  }
+
   return (
     <div className="app-shell">
       <header className="hero">
@@ -24,6 +36,16 @@ export function App() {
               {item.label}
             </Link>
           ))}
+          <button
+            onClick={handleLogout}
+            style={{
+              padding: '10px 16px', borderRadius: 999, border: 'none',
+              background: 'rgba(23,42,58,0.08)', color: '#172a3a',
+              cursor: 'pointer', fontSize: '0.875rem', fontWeight: 500,
+            }}
+          >
+            Sign out
+          </button>
         </nav>
       </header>
 
